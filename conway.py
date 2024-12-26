@@ -18,7 +18,7 @@ BUTTON_TEXT_COLOR = (255, 255, 255)
 SIDE_PANEL_COLOR = (50, 50, 50)
 TEXT_COLOR = (255, 255, 255)
 FPS = 5
-CPU = False
+BOT = False
 
 if len(sys.argv) > 1:
     if sys.argv[1] == "--base":
@@ -121,7 +121,7 @@ while running:
                 if 0 <= row < GRID_SIZE and 0 <= col < GRID_SIZE and grid[row][col] == 0:
                     grid[row][col] = player_turn
                     player_turn = 2 if player_turn == 1 else 1
-                    if CPU and player_turn == 2:
+                    if BOT and player_turn == 2:
                         locations = []
                         for r in range(GRID_SIZE):
                             for c in range(GRID_SIZE):
