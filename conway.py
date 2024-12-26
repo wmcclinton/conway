@@ -1,5 +1,6 @@
 import pygame
 import sys
+import random
 
 pygame.init()
 
@@ -17,6 +18,7 @@ BUTTON_TEXT_COLOR = (255, 255, 255)
 SIDE_PANEL_COLOR = (50, 50, 50)
 TEXT_COLOR = (255, 255, 255)
 FPS = 5
+CPU = False
 
 if len(sys.argv) > 1:
     if sys.argv[1] == "--base":
@@ -119,6 +121,25 @@ while running:
                 if 0 <= row < GRID_SIZE and 0 <= col < GRID_SIZE and grid[row][col] == 0:
                     grid[row][col] = player_turn
                     player_turn = 2 if player_turn == 1 else 1
+                    if CPU and player_turn == 2:
+                        locations = []
+                        for r in range(GRID_SIZE):
+                            for c in range(GRID_SIZE):
+                                if grid[r][c] == 1:
+                                    directions = [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)]
+                                    for dr, dc in directions:
+                                        new_r = r + dr
+                                        new_c = c + dc
+                                        if 0 <= new_r < GRID_SIZE and 0 <= new_c < GRID_SIZE and grid[new_r][new_c] == 0:
+                                            locations.append((new_r, new_c))
+                        if len(locations) > 0:
+                            move = random.choice(locations)
+                            grid[move[0]][move[1]] = player_turn
+                        else:
+                            simulating = True
+                        player_turn = 2 if player_turn == 1 else 1
+
+                        
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_f or event.key == pygame.K_ESCAPE:
                 if FullScreen:
