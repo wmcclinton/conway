@@ -3,8 +3,8 @@ import sys
 
 pygame.init()
 
-GRID_SIZE = 10
-CELL_SIZE = 50
+GRID_SIZE = 25
+CELL_SIZE = 30
 SCREEN_SIZE = GRID_SIZE * CELL_SIZE
 SIDE_PANEL_WIDTH = 400
 SCREEN_COLOR = (0, 0, 0)
@@ -41,6 +41,7 @@ font = pygame.font.Font(None, 24)
 button_rect = pygame.Rect((SCREEN_SIZE // 2 - 110, SCREEN_SIZE + 10), (100, 40))
 reset_button_rect = pygame.Rect((SCREEN_SIZE // 2, SCREEN_SIZE + 10), (100, 40))
 
+FullScreen = False
 running = True
 simulating = False
 player_turn = 1  # 1 for Player 1, 2 for Player 2
@@ -79,10 +80,9 @@ def draw_side_panel():
     rules = [
         "1. Players take turns.",
         "2. Either, take cell or simulate.",
-        "2. White = Player 1.",
-        "3. Black = Player 2.",
-        "4. Click to take.",
-        "5. Click Sim to simulate.",
+        "3. Click to take.",
+        "4. Click Sim to simulate.",
+        "5. No Repeat Turns (Ko).",
         "6. Win if only color after a Sim.",
         "7. Sim step rules for each cell:",
         "   - 2-3 neighbors, the cell lives.",
@@ -119,6 +119,14 @@ while running:
                 if 0 <= row < GRID_SIZE and 0 <= col < GRID_SIZE and grid[row][col] == 0:
                     grid[row][col] = player_turn
                     player_turn = 2 if player_turn == 1 else 1
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_f or event.key == pygame.K_ESCAPE:
+                if FullScreen:
+                    Ekran = pygame.display.set_mode((SCREEN_SIZE + SIDE_PANEL_WIDTH, SCREEN_SIZE + 60))
+                    FullScreen = False
+                else:
+                    Ekran = pygame.display.set_mode((SCREEN_SIZE + SIDE_PANEL_WIDTH, SCREEN_SIZE + 60), pygame.FULLSCREEN)
+                    FullScreen = True
 
     screen.fill(SCREEN_COLOR)
 
