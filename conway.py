@@ -32,6 +32,10 @@ if len(sys.argv) > 1:
         BUTTON_TEXT_COLOR = (255, 255, 255)
         SIDE_PANEL_COLOR = (50, 50, 50)
         TEXT_COLOR = (150, 150, 150)
+        if len(sys.argv) > 2:
+            if sys.argv[2] == "--bot":
+                print("[Bot Mode Enabled]")
+                BOT = True
     else:
         print("Invalid Argument - Did you mena '--base'?")
         sys.exit()
@@ -119,7 +123,16 @@ while running:
                 row = mouse_y // CELL_SIZE
                 col = mouse_x // CELL_SIZE
                 if 0 <= row < GRID_SIZE and 0 <= col < GRID_SIZE and grid[row][col] == 0:
-                    grid[row][col] = player_turn
+                    if BOT and player_turn == 2:
+                        valid_locations = []
+                        for r in range(GRID_SIZE):
+                            for c in range(GRID_SIZE):
+                                if grid[r][c] == 0:
+                                    valid_locations.append((r, c))
+                        row, col = random.choice(valid_locations)
+                        grid[row][col] = player_turn
+                    else:
+                        grid[row][col] = player_turn
                     player_turn = 2 if player_turn == 1 else 1
                     if BOT and player_turn == 2:
                         locations = []
